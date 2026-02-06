@@ -4,81 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Fate of Ophelia</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-        <div class="audio-control">
-        <button id="musicBtn" class="audio-btn">🎵 Play Ambiance</button>
+    <div id="welcomeScreen" class="welcome-overlay">
+        <div class="welcome-content">
+            <h1>Enter the Tragedy</h1>
+            <p>Disarankan menggunakan headphone.</p>
+            <button id="enterBtn" class="enter-btn">Mulai Perjalanan <span>🌸</span></button>
+        </div>
+    </div>
+
+    <div id="particles"></div>
+
+    <div class="audio-control">
+        <button id="musicBtn" class="audio-btn pulse-effect">🎵 Playing...</button>
         <audio id="ambianceTrack" loop>
             <source src="https://www.dropbox.com/scl/fi/b62f5emffpsm7c3hugier/Taylor-Swift-The-Fate-of-Ophelia.mp3?rlkey=dnjlut9fdm5ggt9sbf0nr7zvq&st=ihb8b3oh&dl=1" type="audio/mpeg">
         </audio>
     </div>
 
-
     <section class="hero">
-        <div class="overlay"></div>
-        <div class="hero-content">
-            <h1>The Fate of Ophelia</h1>
-            <p class="subtitle">"Her clothes spread wide, and, mermaid-like, awhile they bore her up..."</p>
-            <a href="#story" class="scroll-down">↓</a>
+        <div class="hero-bg"></div> <div class="hero-content">
+            <h1 class="fade-in-up">The Fate of Ophelia</h1>
+            <p class="subtitle fade-in-up delay-1">"Her clothes spread wide, and, mermaid-like, awhile they bore her up..."</p>
+            <a href="#story" class="scroll-down fade-in-up delay-2">
+                <span class="mouse">
+                    <span class="wheel"></span>
+                </span>
+            </a>
         </div>
     </section>
 
     <section id="story" class="section narrative">
-        <h2>The Descent</h2>
-        <p>
-            Terdapat sebuah pohon willow yang tumbuh miring di sungai, 
-            memantulkan daun-daun peraknya di air yang bening. 
-            Di sanalah ia datang, membawa karangan bunga yang fantastis.
-        </p>
-        <p>
-            Ophelia tidak mati karena air, melainkan karena beban kesedihan yang tak tertahankan. 
-            Dunia ini terlalu keras untuk jiwanya yang rapuh, dan sungai itu menawarkan pelukan yang damai.
-        </p>
+        <div class="glass-card">
+            <h2>The Descent</h2>
+            <p>
+                Terdapat sebuah pohon willow yang tumbuh miring di sungai, 
+                memantulkan daun-daun peraknya di air yang bening.
+            </p>
+        </div>
     </section>
 
     <section id="flowers" class="section">
         <h2>Language of Flowers</h2>
-        <p>Setiap bunga yang digenggamnya adalah pesan terakhir yang tak terucap.</p>
-        
         <div class="flower-grid">
-            <div class="flower-card">
-                <div class="flower-name">Rosemary</div>
-                <div class="flower-meaning">"That's for remembrance; pray, love, remember."</div>
+            <div class="flower-card" style="--delay: 0s">
+                <div class="flower-icon">🌿</div>
+                <h3>Rosemary</h3>
+                <p>Remembrance</p>
             </div>
-            <div class="flower-card">
-                <div class="flower-name">Pansies</div>
-                <div class="flower-meaning">"And there is pansies, that's for thoughts."</div>
+            <div class="flower-card" style="--delay: 0.1s">
+                <div class="flower-icon">💜</div>
+                <h3>Pansies</h3>
+                <p>Thoughts</p>
             </div>
-            <div class="flower-card">
-                <div class="flower-name">Fennel & Columbines</div>
-                <div class="flower-meaning">Simbol sanjungan dan perselingkuhan (Sifat Raja).</div>
+            <div class="flower-card" style="--delay: 0.2s">
+                <div class="flower-icon">🥀</div>
+                <h3>Rue</h3>
+                <p>Regret</p>
             </div>
-            <div class="flower-card">
-                <div class="flower-name">Rue</div>
-                <div class="flower-meaning">"There's rue for you... we may call it herb-grace o' Sundays." (Penyesalan)</div>
-            </div>
-             <div class="flower-card">
-                <div class="flower-name">Daisy</div>
-                <div class="flower-meaning">Simbol kepolosan, namun ia tak memberikannya pada siapa pun.</div>
-            </div>
-            <div class="flower-card">
-                <div class="flower-name">Violets</div>
-                <div class="flower-meaning">"I would give you some violets, but they withered all when my father died."</div>
+             <div class="flower-card" style="--delay: 0.3s">
+                <div class="flower-icon">🌼</div>
+                <h3>Daisy</h3>
+                <p>Innocence</p>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>Inspired by Shakespeare's Hamlet & The Art of John Everett Millais.</p>
+        <p>Inspired by Shakespeare & Taylor Swift</p>
     </footer>
 
-    <script src="script.js"></script>
-
-</body>
-</html>
+    <script src="script.js
