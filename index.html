@@ -6,14 +6,236 @@
     <title>The Fate of Ophelia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- CSS DI SINI --- */
+        :root {
+            --bg-color: #051010;
+            --text-color: #e6e0d4;
+            --gold: #d4af37;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+        }
+
+        /* WELCOME SCREEN */
+        .welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+        }
+
+        .welcome-content {
+            text-align: center;
+            animation: fadeIn 2s ease;
+        }
+
+        .enter-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/9/94/John_Everett_Millais_-_Ophelia_-_Google_Art_Project.jpg') no-repeat center center/cover;
+            filter: brightness(0.6);
+            transform: scale(1.1);
+            transition: transform 10s ease;
+        }
+
+        .hero.active .hero-bg {
+            transform: scale(1);
+        }
+
+        .hero-content { z-index: 2; }
+
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            margin: 0;
+        }
+
+        /* ANIMASI TEKS */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+
+        /* MOUSE SCROLL */
+        .mouse {
+            width: 30px; height: 50px;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            display: block;
+            margin: 40px auto 0;
+            position: relative;
+        }
+
+        .wheel {
+            width: 4px; height: 8px;
+            background: var(--text-color);
+            border-radius: 2px;
+            position: absolute;
+            top: 10px; left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 1.5s infinite;
+        }
+
+        @keyframes scroll {
+            0% { top: 10px; opacity: 1; }
+            100% { top: 30px; opacity: 0; }
+        }
+
+        /* SECTION & CARDS */
+        .section {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 50px;
+        }
+
+        .narrative p { font-size: 1.2rem; line-height: 1.8; }
+        .section h2 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); text-align: center; margin-bottom: 40px;}
+
+        /* FLOWER GRID */
+        .flower-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .flower-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            width: 200px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        .flower-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255,255,255,0.1);
+            border-color: var(--gold);
+        }
+
+        .flower-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
+        .flower-card h3 { color: var(--gold); margin: 10px 0; font-family: 'Cinzel', serif; }
+        .flower-card p { font-style: italic; font-size: 0.9rem; }
+
+        /* AUDIO BUTTON */
+        .audio-control {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 100;
+        }
+        .audio-btn {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        .pulse-effect { animation: pulse-gold 2s infinite; }
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* PARTIKEL */
+        #particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background-image: radial-gradient(#fff 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: particleMove 20s linear infinite;
+        }
+        @keyframes particleMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .section { padding: 50px 20px; }
+        }
+    </style>
 </head>
 <body>
 
     <div id="welcomeScreen" class="welcome-overlay">
         <div class="welcome-content">
             <h1>Enter the Tragedy</h1>
-            <p>Disarankan menggunakan headphone.</p>
+            <p style="margin-bottom: 20px; opacity: 0.7;">Disarankan menggunakan headphone</p>
             <button id="enterBtn" class="enter-btn">Mulai Perjalanan <span>🌸</span></button>
         </div>
     </div>
@@ -21,54 +243,54 @@
     <div id="particles"></div>
 
     <div class="audio-control">
-        <button id="musicBtn" class="audio-btn pulse-effect">🎵 Playing...</button>
+        <button id="musicBtn" class="audio-btn pulse-effect">🎵 Loading...</button>
         <audio id="ambianceTrack" loop>
             <source src="https://www.dropbox.com/scl/fi/b62f5emffpsm7c3hugier/Taylor-Swift-The-Fate-of-Ophelia.mp3?rlkey=dnjlut9fdm5ggt9sbf0nr7zvq&st=ihb8b3oh&dl=1" type="audio/mpeg">
         </audio>
     </div>
 
     <section class="hero">
-        <div class="hero-bg"></div> <div class="hero-content">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
             <h1 class="fade-in-up">The Fate of Ophelia</h1>
             <p class="subtitle fade-in-up delay-1">"Her clothes spread wide, and, mermaid-like, awhile they bore her up..."</p>
             <a href="#story" class="scroll-down fade-in-up delay-2">
-                <span class="mouse">
-                    <span class="wheel"></span>
-                </span>
+                <span class="mouse"><span class="wheel"></span></span>
             </a>
         </div>
     </section>
 
-    <section id="story" class="section narrative">
+    <section id="story" class="section narrative fade-in-up">
         <div class="glass-card">
             <h2>The Descent</h2>
             <p>
                 Terdapat sebuah pohon willow yang tumbuh miring di sungai, 
                 memantulkan daun-daun peraknya di air yang bening.
+                Di sanalah ia datang, membawa karangan bunga yang fantastis.
             </p>
         </div>
     </section>
 
-    <section id="flowers" class="section">
+    <section id="flowers" class="section fade-in-up">
         <h2>Language of Flowers</h2>
         <div class="flower-grid">
-            <div class="flower-card" style="--delay: 0s">
-                <div class="flower-icon">🌿</div>
+            <div class="flower-card">
+                <span class="flower-icon">🌿</span>
                 <h3>Rosemary</h3>
                 <p>Remembrance</p>
             </div>
-            <div class="flower-card" style="--delay: 0.1s">
-                <div class="flower-icon">💜</div>
+            <div class="flower-card">
+                <span class="flower-icon">💜</span>
                 <h3>Pansies</h3>
                 <p>Thoughts</p>
             </div>
-            <div class="flower-card" style="--delay: 0.2s">
-                <div class="flower-icon">🥀</div>
+            <div class="flower-card">
+                <span class="flower-icon">🥀</span>
                 <h3>Rue</h3>
                 <p>Regret</p>
             </div>
-             <div class="flower-card" style="--delay: 0.3s">
-                <div class="flower-icon">🌼</div>
+             <div class="flower-card">
+                <span class="flower-icon">🌼</span>
                 <h3>Daisy</h3>
                 <p>Innocence</p>
             </div>
@@ -76,7 +298,74 @@
     </section>
 
     <footer>
-        <p>Inspired by Shakespeare & Taylor Swift</p>
+        <p style="text-align:center; opacity:0.5; padding:20px;">Inspired by Shakespeare & Taylor Swift</p>
     </footer>
 
-    <script src="script.js
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const enterBtn = document.getElementById('enterBtn');
+            const audio = document.getElementById('ambianceTrack');
+            const musicBtn = document.getElementById('musicBtn');
+            const heroSection = document.querySelector('.hero');
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+
+            // FUNGSI UTAMA TOMBOL MULAI
+            enterBtn.addEventListener('click', () => {
+                // 1. Langsung hilangkan layar hitam (JANGAN MENUNGGU AUDIO)
+                welcomeScreen.style.opacity = '0';
+                
+                // Aktifkan animasi background
+                heroSection.classList.add('active');
+                
+                // Munculkan teks
+                setTimeout(() => {
+                    welcomeScreen.style.display = 'none';
+                    fadeElements.forEach(el => el.classList.add('visible'));
+                }, 800);
+
+                // 2. Coba putar audio di latar belakang
+                audio.volume = 0.5; // Set volume 50% biar tidak kaget
+                const playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Audio berhasil
+                        musicBtn.innerHTML = "🎵 Playing...";
+                    })
+                    .catch(error => {
+                        // Audio gagal (biasanya karena koneksi lambat atau setting browser)
+                        console.log("Audio play error:", error);
+                        musicBtn.innerHTML = "🔇 Click to Play";
+                        // Kita paksa user klik manual jika gagal autoplay
+                    });
+                }
+            });
+
+            // LOGIKA TOMBOL MUSIK POJOK
+            musicBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    musicBtn.innerHTML = "🎵 Playing...";
+                    musicBtn.classList.add('pulse-effect');
+                } else {
+                    audio.pause();
+                    musicBtn.innerHTML = "⏸ Paused";
+                    musicBtn.classList.remove('pulse-effect');
+                }
+            });
+
+            // ANIMASI SCROLL SEDERHANA
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html
