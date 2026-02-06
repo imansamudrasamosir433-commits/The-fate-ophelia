@@ -1,37 +1,60 @@
-// --- AUDIO PLAYER LOGIC ---
-const btn = document.getElementById('musicBtn');
-const audio = document.getElementById('ambianceTrack');
+document.addEventListener('DOMContentLoaded', () => {
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const enterBtn = document.getElementById('enterBtn');
+    const audio = document.getElementById('ambianceTrack');
+    const musicBtn = document.getElementById('musicBtn');
+    const heroSection = document.querySelector('.hero');
+    const fadeElements = document.querySelectorAll('.fade-in-up');
 
-btn.addEventListener('click', () => {
-    if (audio.paused) {
-        // Mencoba memutar audio
-        audio.play().catch(error => {
-            console.log("Autoplay dicegah browser:", error);
-            alert("Silakan klik lagi untuk memutar musik.");
+    // 1. LOGIKA TOMBOL MASUK (Agar Musik Autoplay)
+    enterBtn.addEventListener('click', () => {
+        // Hilangkan layar pembuka
+        welcomeScreen.style.opacity = '0';
+        setTimeout(() => {
+            welcomeScreen.style.display = 'none';
+        }, 1000);
+
+        // Mulai Musik
+        audio.play().then(() => {
+            musicBtn.innerHTML = "🎵 Playing...";
+        }).catch(err => {
+            console.log("Autoplay blocked:", err);
+            musicBtn.innerHTML = "🔇 Play Music";
         });
-        btn.innerHTML = "⏸ Pause Ambiance";
-        btn.style.borderColor = "#fff";
-        btn.style.background = "rgba(255,255,255,0.1)";
-    } else {
-        // Pause audio
-        audio.pause();
-        btn.innerHTML = "🎵 Play Ambiance";
-        btn.style.borderColor = "#a89f81";
-        btn.style.background = "rgba(0,0,0,0.5)";
-    }
-});
 
-// --- PARALLAX EFFECT FOR TEXT ---
-window.addEventListener('scroll', function() {
-    const scrollPosition = window.pageYOffset;
-    const heroContent = document.querySelector('.hero-content');
-    
-    // Pastikan elemen ada sebelum dimanipulasi agar tidak error
-    if(heroContent) {
-        // Teks bergerak turun lebih lambat dari scroll (efek kedalaman)
-        heroContent.style.transform = 'translateY(' + scrollPosition * 0.4 + 'px)';
+        // Aktifkan animasi Hero
+        heroSection.classList.add('active');
         
-        // Teks perlahan menghilang saat di-scroll ke bawah
-        heroContent.style.opacity = 1 - (scrollPosition / 700);
-    }
+        // Munculkan teks satu per satu
+        fadeElements.forEach(el => {
+            el.classList.add('visible');
+        });
+    });
+
+    // 2. KONTROL AUDIO MANUAL
+    musicBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            musicBtn.innerHTML = "🎵 Playing...";
+            musicBtn.classList.add('pulse-effect');
+        } else {
+            audio.pause();
+            musicBtn.innerHTML = "⏸ Paused";
+            musicBtn.classList.remove('pulse-effect');
+        }
+    });
+
+    // 3. ANIMASI SCROLL (Muncul saat digulir)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('fade-in-up'); // Tambah class animasi dasar
+        observer.observe(section);
+    });
 });
